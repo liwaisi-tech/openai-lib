@@ -1,0 +1,69 @@
+cabal-version:      2.4
+name:               openai-lib
+version:            0.1.0.0
+synopsis:
+    A Haskell project that allow developers  interact with the API through HTTP requests.
+
+-- A longer description of the package.
+-- description:
+homepage:           https://github.com/liwasi-tech/openai-lib
+
+-- A URL where users can report bugs.
+-- bug-reports:
+license:            MIT
+license-file:       LICENSE
+author:             Braejan Arias
+maintainer:         ing.brayanarias@gmail.com
+
+-- A copyright notice.
+-- copyright:
+category:           AI
+extra-source-files:
+    CHANGELOG.md
+    README.md
+
+library
+    exposed-modules:  Domain.Models.Entity.Model
+                    , Domain.Models.Entity.ModelList
+                    , ValueObject.Entity.OpenAIConfiguration
+
+    -- Modules included in this library but not exported.
+    other-modules:  ValueObject.Repository.HTTP.Constants
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:    base ^>=4.16.4.0
+                    , aeson ^>=2.1.2.1
+                    , http-client-tls ^>=0.3.6.2
+                    , http-client ^>=0.7.13.1
+                    , http-types ^>=0.12.3
+                    , text ^>=2.0.2
+                    , bytestring ^>=0.11.4.0
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable openai-lib
+    main-is:          Main.hs
+
+    -- Modules included in this executable, other than Main.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:
+        base ^>=4.16.4.0,
+        openai-lib
+
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
+test-suite openai-lib-test
+    default-language: Haskell2010
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Tests.hs
+    build-depends:    base ^>=4.16.4.0
+                    , openai-lib
+                    , tasty ^>=1.4.3
+                    , tasty-hunit ^>=0.10.0.3
+    other-modules:    ValueObject.Entity.OpenAIConfigurationTest
