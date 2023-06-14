@@ -25,10 +25,16 @@ extra-source-files:
 library
     exposed-modules:  Domain.Models.Entity.Model
                     , Domain.Models.Entity.ModelList
+                    , Domain.Models.Entity.ModelPermission
+                    , Domain.Models.Repository.HTTP.ListModels
+                    , Domain.Models.Usecases.Client
+                    , ValueObject.Entity.Error
+                    , ValueObject.Entity.ErrorResponse
                     , ValueObject.Entity.OpenAIConfiguration
+                    , ValueObject.Repository.Env.EnvConfiguration
 
     -- Modules included in this library but not exported.
-    other-modules:  ValueObject.Repository.HTTP.Constants
+    other-modules:    ValueObject.Repository.HTTP.Constants
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -50,9 +56,9 @@ executable openai-lib
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:
-        base ^>=4.16.4.0,
-        openai-lib
+    build-depends:    base ^>=4.16.4.0
+                    , openai-lib
+                    , text ^>=2.0.2
 
     hs-source-dirs:   app
     default-language: Haskell2010
@@ -62,8 +68,15 @@ test-suite openai-lib-test
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test
     main-is:          Tests.hs
-    build-depends:    base ^>=4.16.4.0
+    build-depends:    aeson ^>=2.1.2.1
+                    , base ^>=4.16.4.0
+                    , bytestring ^>=0.11.4.0
                     , openai-lib
                     , tasty ^>=1.4.3
                     , tasty-hunit ^>=0.10.0.3
-    other-modules:    ValueObject.Entity.OpenAIConfigurationTest
+                    , text ^>=2.0.2
+    other-modules:    Domain.Models.Entity.ModelPermissionTest
+                    , Domain.Models.Repository.HTTP.ListModelsTest
+                    , ValueObject.Entity.ErrorTest
+                    , ValueObject.Entity.OpenAIConfigurationTest
+                    , ValueObject.Repository.Env.EnvConfigurationTest
