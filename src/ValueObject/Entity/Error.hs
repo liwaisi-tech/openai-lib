@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 module ValueObject.Entity.Error where
 
 import GHC.Generics (Generic)
@@ -17,3 +18,11 @@ instance FromJSON Error where
 
 instance ToJSON Error where
   toJSON = genericToJSON defaultOptions { fieldLabelModifier = drop 1 }
+
+newError :: Text -> Error
+newError message = Error {
+  _type = "internal_library_error",
+  _message = message,
+  _param = Nothing,
+  _code = Nothing
+}

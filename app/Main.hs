@@ -16,6 +16,10 @@ main = do
   case eitherModel of
     Left error -> print error
     Right model -> TIO.putStrLn $ T.pack $ show model
+  maybeError <- ModelClient.deleteModel "curie:ft-acmeco-2021-03-03-21-44-20"
+  case maybeError of
+    Just error -> print error
+    Nothing -> print "Model deleted successfully"
 
 showModelList :: [Model] -> IO()
 showModelLits [] = return ()
