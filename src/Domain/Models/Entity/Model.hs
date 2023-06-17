@@ -13,7 +13,7 @@ data Model = Model
   , permission :: [ModelPermission]
   , root :: Text
   , parent :: Maybe Text
-  } deriving (Show, Generic)
+  } deriving (Show, Generic, Eq)
 
 instance FromJSON Model
 instance ToJSON Model

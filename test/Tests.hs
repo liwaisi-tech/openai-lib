@@ -5,6 +5,7 @@ import qualified ValueObject.Repository.Env.EnvConfigurationTest as EnvConfigura
 import qualified Domain.Models.Entity.ModelPermissionTest as ModelPermissionTest
 import qualified Domain.Models.Repository.HTTP.ListModelsTest as ListModelsTest
 import qualified ValueObject.Entity.ErrorTest as ErrorTest
+import qualified Domain.Models.Entity.ModelTest as ModelTest
 
 main :: IO ()
 main = do
@@ -16,7 +17,14 @@ tests = testGroup "Tests"
     [
         OpenAIConfigurationTest.allTests
       , EnvConfigurationTest.allTests
-      , ModelPermissionTest.allTests
       , ListModelsTest.allTests
       , ErrorTest.allTests
+      ,testGroupDomainModels
+    ]
+
+testGroupDomainModels :: TestTree
+testGroupDomainModels = testGroup "Domain.Models"
+    [
+        ModelTest.allTests
+      , ModelPermissionTest.allTests
     ]

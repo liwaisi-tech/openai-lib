@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Domain.Models.Entity.ModelPermissionTest where
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=), assertEqual)

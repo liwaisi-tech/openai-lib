@@ -72,11 +72,13 @@ test-suite openai-lib-test
     build-depends:    aeson ^>=2.1.2.1
                     , base ^>=4.16.4.0
                     , bytestring ^>=0.11.4.0
+                    , here ^>=1.2.13
                     , openai-lib
                     , tasty ^>=1.4.3
                     , tasty-hunit ^>=0.10.0.3
                     , text ^>=2.0.2
     other-modules:    Domain.Models.Entity.ModelPermissionTest
+                    , Domain.Models.Entity.ModelTest
                     , Domain.Models.Repository.HTTP.ListModelsTest
                     , ValueObject.Entity.ErrorTest
                     , ValueObject.Entity.OpenAIConfigurationTest
