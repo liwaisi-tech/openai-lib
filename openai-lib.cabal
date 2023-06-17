@@ -24,9 +24,10 @@ extra-source-files:
 
 library
     exposed-modules:  Domain.Models.Entity.Model
-                    , Domain.Models.Entity.ModelList
+                    , Domain.Models.Entity.ListModelsResponse
                     , Domain.Models.Entity.ModelPermission
                     , Domain.Models.Repository.HTTP.ListModels
+                    , Domain.Models.Repository.HTTP.RetrieveModel
                     , Domain.Models.Usecases.Client
                     , ValueObject.Entity.Error
                     , ValueObject.Entity.ErrorResponse
@@ -39,12 +40,12 @@ library
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:    base ^>=4.16.4.0
+                    , bytestring ^>=0.11.4.0
                     , aeson ^>=2.1.2.1
                     , http-client-tls ^>=0.3.6.2
                     , http-client ^>=0.7.13.1
                     , http-types ^>=0.12.3
                     , text ^>=2.0.2
-                    , bytestring ^>=0.11.4.0
     hs-source-dirs:   src
     default-language: Haskell2010
 

@@ -3,7 +3,7 @@ module Domain.Models.Repository.HTTP.ListModels where
 
 import Data.Text (Text)
 import ValueObject.Repository.HTTP.Constants (openAIBaseURL)
-import Domain.Models.Entity.ModelList (ModelList)
+import Domain.Models.Entity.ListModelsResponse (ListModelsResponse (_data))
 import Network.HTTP.Client.TLS (newTlsManager)
 import Network.HTTP.Client (parseRequest, Request (requestHeaders), httpLbs, Response (responseStatus, responseBody))
 
@@ -16,13 +16,18 @@ import ValueObject.Entity.OpenAIConfiguration (OpenAIConfiguration(openAIAPIKey,
 import ValueObject.Repository.Env.EnvConfiguration (fromEnvVariables)
 import qualified Data.ByteString.Char8 as LBS
 import ValueObject.Entity.Error (Error (_message))
-import ValueObject.Entity.ErrorResponse (ErrorResponse (error))
+import ValueObject.Entity.ErrorResponse (ErrorResponse (..))
+import qualified ValueObject.Entity.ErrorResponse as ErrorResponse
+import Domain.Models.Entity.Model (Model)
 
 listModelsUrl :: Text
 listModelsUrl = openAIBaseURL <> "models"
 
+help :: Text
+help = "Lists the currently available models, and provides basic information about each one such as the owner and availability."
+
 -- GET implementation to list all models calling the operationId: listModels
-listModels :: IO (Either Text ModelList)
+listModels :: IO (Either Text [Model])
 listModels = do
     tlsManager <- newTlsManager
     request <- parseRequest $ T.unpack listModelsUrl
@@ -41,19 +46,23 @@ listModels = do
             let eitherError = eitherDecode $ responseBody response :: Either String ErrorResponse
             case responseStatus response of
                 status | statusIsSuccessful status -> do
-                    let eitherModelList = eitherDecode $ responseBody response :: Either String ModelList
+                    let eitherModelList = eitherDecode $ responseBody response :: Either String ListModelsResponse
                     case eitherModelList of
-                        Right modelList -> return $ Right modelList
+                        Right modelList -> return $ Right $ _data modelList
                         Left err -> return $ Left ("Error decoding response body to ModelList" <> T.pack err)
                 status | statusIsClientError status ->
                     return $ do
                         case eitherError of
-                            Right error -> Left $ "Client error when calling listModels: " <> _message error
-                            Left err -> Left $ "Client error when calling listModels: " <> body  
+                            Right errorResponse -> do
+                                let err = ErrorResponse.error errorResponse
+                                Left $ "Client error when calling listModels: " <> _message err
+                            Left err -> Left $ "Client error when calling listModels: " <> T.pack err
                 status | statusIsServerError status ->
                     return $ do
                         case eitherError of
-                            Right error -> Left $ "Server error when calling listModels: " <> _message error
-                            Left err -> Left $ "Server error when calling listModels: " <> body
+                            Right errorResponse -> do
+                                let err = ErrorResponse.error errorResponse
+                                Left $ "Server error when calling listModels: " <> _message err
+                            Left _ -> Left $ "Server error when calling listModels: " <> body
                 _ ->
                     return $ Left $ "Unknown error when calling listModels: " <> body
