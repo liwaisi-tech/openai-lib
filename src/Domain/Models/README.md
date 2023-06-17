@@ -1,6 +1,8 @@
 # Domain.Models.Usecases.Client
 
-This module provides functions for interacting with the OpenAI API to list, retrieve, and delete models.
+This module provides functions for interacting with the OpenAI API to list, retrieve, and delete models. You need to set the `OPENAI_API_KEY` environment variable to use this module.
+
+
 
 ### `listModels :: IO (Either Text [Model])`
 
